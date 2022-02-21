@@ -552,12 +552,13 @@ class YearMonthPickerState extends State<YearMonthPicker> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 140),
+            padding: const EdgeInsets.symmetric(horizontal: 120),
             child: Row(
               children: [
                 Expanded(
                   child: YearPicker(
                     items: _years,
+                    currentDateTime: widget.currentDateTime,
                     onSelectedItemChanged: (index){
                       setState(() {
                         _year = _years[index];
@@ -593,12 +594,14 @@ class YearMonthPickerState extends State<YearMonthPicker> {
 class YearPicker extends StatefulWidget {
   const YearPicker({
     required this.items,
+    required this.currentDateTime,
     this.onSelectedItemChanged,
     this.controller,
     Key? key,
   }) : super(key: key);
 
   final List items;
+  final DateTime currentDateTime;
   final Function(int)? onSelectedItemChanged;
   final ScrollController? controller;
 
@@ -614,13 +617,15 @@ class YearPickerState extends State<YearPicker> {
 
   @override
   Widget build(BuildContext context) {
+    JapaneseDateFormat df = JapaneseDateFormat('Gy年');
+    final _items = widget.items.map((year) => df.format(DateTime(year, widget.currentDateTime.month))).toList();
     return ListWheelScrollView.useDelegate(
       controller: widget.controller,
       itemExtent: 44,
       physics: const FixedExtentScrollPhysics(),
       onSelectedItemChanged: widget.onSelectedItemChanged,
       childDelegate: ListWheelChildLoopingListDelegate(
-        children: widget.items.map((year) => Center(child: Text('$year年'))).toList(),
+        children: _items.map((item) => Center(child: Text(item))).toList(),
       ),
     );
   }
