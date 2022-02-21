@@ -472,7 +472,7 @@ class MonthlyPickerButtonState extends State<MonthlyPickerButton> with SingleTic
 
   @override
   Widget build(BuildContext context) {
-    JapaneseDateFormat _df = JapaneseDateFormat('Gyy年MM月');
+    JapaneseDateFormat _df = JapaneseDateFormat('Gy年M月');
     return GestureDetector(
       onTap:_animationChange,
       child: Row(

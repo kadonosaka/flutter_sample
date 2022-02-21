@@ -67,12 +67,14 @@ class JapaneseDateFormat {
     }
 
     final _era = _japaneseCalendarList[_index];
-    final _year = buildJapaneseEra(dateTime, _era, abbreviation, pattern.lastIndexOf('y') - pattern.indexOf('y') + 1);
-    final _month = '${dateTime.month}'.padLeft(pattern.lastIndexOf('M') - pattern.indexOf('M') + 1, '0');
-    // final _day = '${dateTime.day}'.padLeft(pattern.lastIndexOf('d') - pattern.indexOf('d') + 1, '0');
 
-    // 'Gy年MM月dd日'
-    return '$_year年$_month月';
+    return pattern
+      .replaceAll('Gyy', buildJapaneseEra(dateTime, _era, abbreviation, 2))
+      .replaceAll('Gy', buildJapaneseEra(dateTime, _era, abbreviation, 1))
+      .replaceAll('MM', '${dateTime.month}'.padLeft(2, '0'))
+      .replaceAll('M', '${dateTime.month}'.padLeft(1, '0'))
+      .replaceAll('dd', '${dateTime.day}'.padLeft(2, '0'))
+      .replaceAll('d', '${dateTime.day}'.padLeft(1, '0'));
   }
 }
 
